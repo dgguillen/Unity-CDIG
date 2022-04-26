@@ -4,51 +4,44 @@ using UnityEngine;
 
 public class bounce : MonoBehaviour {
 
-	public float velocidad = 200;
-	public GameObject gestorPlanos;
+	public float fSpeed = 200;
+	public GameObject gPlaneManager;
 
-	private Transform[] children;
-	private Transform closest;
-	private bool penis = false;
+	private Transform[] tChildren;
+	private Transform tNext;
+	private bool bBounce = false;
 
-	// Use this for initialization
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		children = gestorPlanos.GetComponentsInChildren<Transform>();
-		if (penis) {
-			this.GetComponent<Transform>().position = Vector3.Lerp(this.GetComponent<Transform>().position, closest.position, 0.02f);
+		tChildren = gPlaneManager.GetComponentsInChildren<Transform>();
+		if (!bBounce && tNext.gameObject.tag == "Bounced") {
+			this.GetComponent<Transform>().position = Vector3.Lerp(this.GetComponent<Transform>().position, tNext.position, 0.03f);
 		}
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		//Random.Range(350.0f, 500.0f)
-		this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 350 * Time.deltaTime * 100, 0));
-
-		closest = GetClosestEnemy(children, collision);
-		Vector3 currentDirection = (closest.position-this.GetComponent<Transform>().position).normalized;
-		Debug.Log(closest.position);
-		penis = !penis;
-		//this.GetComponent<Transform>().Translate(Vector3.Lerp(this.GetComponent<Transform>().position, closest.position, 2f) * Time.deltaTime * velocidad * 300);
+		this.GetComponent<Rigidbody>().AddForce(new Vector3(0, fSpeed * Time.deltaTime * 120, 0));
+		if (bBounce) {
+			tNext = GetNextPlane(tChildren);
+		}
+		if (tNext == null) {
+			// reset all bounce
+		}
+		bBounce = !bBounce;
 	}
 
-	Transform GetClosestEnemy(Transform[] enemies, Collision collision)
+	Transform GetNextPlane(Transform[] tPlanes)
 	{
-		Transform tMin = null;
-		float minDist = Mathf.Infinity;
-		Vector3 currentPos = transform.position;
-		foreach (Transform t in enemies)
+		foreach (Transform t in tPlanes)
 		{
-			float dist = Vector3.Distance(t.position, currentPos);
-			if (dist < minDist && collision.transform != t && t != enemies[0])
-			{
-				tMin = t;
-				minDist = dist;
+			if (t.gameObject.tag != "Bounced" && t != tPlanes[0]) {
+				t.gameObject.tag = "Bounced";
+				return t;
 			}
 		}
-		return tMin;
+		return null;
 	}
 }
