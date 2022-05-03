@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VuforiaUnityInfo version="7.0">
+    <TargetSet version="5.0" toolVersion="2.8.0">
+        <CylinderTarget name="LataBoii" version="3.0" targetId="c71b66cf8e4641d3b036074f3b2e6b73" sideLength="17.000000" topDiameter="7.000000" bottomDiameter="7.000000" sideImage="LataBoii.Body_scaled.jpg"/>
+    </TargetSet>
+</VuforiaUnityInfo>

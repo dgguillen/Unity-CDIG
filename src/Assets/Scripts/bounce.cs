@@ -17,7 +17,7 @@ public class bounce : MonoBehaviour {
 	
 	void Update () {
 		tChildren = gPlaneManager.GetComponentsInChildren<Transform>();
-		if (!bBounce && tNext.gameObject.tag == "Bounced") {
+		if (!bBounce) {
 			this.GetComponent<Transform>().position = Vector3.Lerp(this.GetComponent<Transform>().position, tNext.position, 0.03f);
 		}
 	}
@@ -25,19 +25,27 @@ public class bounce : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		this.GetComponent<Rigidbody>().AddForce(new Vector3(0, fSpeed * Time.deltaTime * 120, 0));
 		if (bBounce) {
-			tNext = GetNextPlane(tChildren);
+			collision.gameObject.tag = "Bounced";
+			tNext = GetNextPlane(tChildren, collision);
 		}
 		if (tNext == null) {
-			// reset all bounce
+			ResetBounce(tChildren);
 		}
 		bBounce = !bBounce;
 	}
 
-	Transform GetNextPlane(Transform[] tPlanes)
+
+	void ResetBounce(Transform[] tPlanes) {
+		foreach (Transform t in tPlanes)
+		{
+			t.gameObject.tag = "Untagged";
+		}
+	}
+	Transform GetNextPlane(Transform[] tPlanes, Collision collision)
 	{
 		foreach (Transform t in tPlanes)
 		{
-			if (t.gameObject.tag != "Bounced" && t != tPlanes[0]) {
+			if (t.gameObject.tag != "Bounced" && t != tPlanes[0] && collision.transform != t) {
 				t.gameObject.tag = "Bounced";
 				return t;
 			}

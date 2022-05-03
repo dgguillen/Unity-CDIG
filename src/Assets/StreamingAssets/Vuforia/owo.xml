@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="pelotaFutbol" size="5.640000 4.418000" />
+    <ImageTarget name="pelotaMargaritas" size="3.600000 3.600000" />
+    <ImageTarget name="pelotaEstrellas" size="5.050000 4.700000" />
+    <ImageTarget name="Pelotabaloncesto" size="6.000000 4.700000" />
+    <CylinderTarget name="LataBoii" sideLength="17.000000"/>
+  </Tracking>
+</QCARConfig>
